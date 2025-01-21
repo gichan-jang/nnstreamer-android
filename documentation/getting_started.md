@@ -434,14 +434,24 @@ $ ./sdkmanager --sdk_root=${HOME}/Android/Sdk --install "platforms;android-34" "
 #### Cloning the GitHub Repository
 
 The Android app's GitHub repository can be found here. To build it, you need to clone the repository
-first.
+first. If you clone with recursive option, you can receive the submodule together.
 
 ```bash
-$ git clone https://github.com/nnstreamer/nnstreamer-android
+$ git clone --recursive https://github.com/nnstreamer/nnstreamer-android
 
 $ ls nnstreamer-android/
 build.gradle.kts  externals  gradle  gradle.properties  gradlew  gradlew.bat  LICENSE  ml_inference_offloading  nnstreamer-api  README.md  settings.gradle.kts
 $ cd nnstreamer-android
+```
+
+To build the application with ml-service feature, you need to set the feature ```feature.mlService=true``` in the [gradle.properties](/gradle.properties) and copy curl lib to jni directory of ml-api.
+```bash
+$ cd nnstreamer-android/external
+$ tar -xJf nnstreamer-android-resource/external/curl-7.60.0.tar.xz  -C ml-api/java/android/nnstreamer/src/main/jni
+$ ls ml-api/java/android/nnstreamer/src/main/jni/curl/
+include  lib  README.txt
+$ ls ml-api/java/android/nnstreamer/src/main/jni/ | grep Android-curl.mk
+Android-curl.mk
 ```
 
 #### Building the Android App using Gradle

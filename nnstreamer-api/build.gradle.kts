@@ -21,6 +21,15 @@ android {
     val nnsEdgeDir = properties["dir.nnstreamerEdge"].toString()
     val nnsEdgeRootPath = externalDirPath.resolve(nnsEdgeDir)
 
+    val mlopsAgentDir = properties["dir.mlopsAgent"].toString()
+    val mlopsAgentRootPath = externalDirPath.resolve(mlopsAgentDir)
+
+    val nnsAndroidResDir = properties["dir.nnsAndroidRes"].toString()
+    val nnsAndroidResRootPath = externalDirPath.resolve(nnsAndroidResDir)
+
+    val mlOffloadingFeature = properties["feature.mlOffloading"].toString()
+    val mlServiceFeature = properties["feature.mlService"].toString()
+
     val mlApiDir = properties["dir.mlApi"].toString()
     val mlApiRootPath = externalDirPath.resolve(mlApiDir)
     val mlApiNNSJniPath = mlApiRootPath.resolve("java/android/nnstreamer/src/main/jni")
@@ -33,7 +42,7 @@ android {
         minSdk = 33 // The maximum API level supported by the NDK v25.2.9519653
         externalNativeBuild {
             ndkBuild {
-                abiFilters("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+                abiFilters("arm64-v8a")
                 arguments(
                     "NDK_PROJECT_PATH=./",
                     "NDK_APPLICATION_MK=$mlApiNNSJniPath/Application.mk",
@@ -41,7 +50,11 @@ android {
                     "GSTREAMER_ROOT_ANDROID=$gstRootPath",
                     "NNSTREAMER_ROOT=$nnsRootPath",
                     "NNSTREAMER_EDGE_ROOT=$nnsEdgeRootPath",
-                    "ML_API_ROOT=$mlApiRootPath"
+                    "NNSTREAMER_ANDROID_RESOURCE_ROOT=$nnsAndroidResRootPath",
+                    "MLOPS_AGENT_ROOT=$mlopsAgentRootPath",
+                    "ML_API_ROOT=$mlApiRootPath",
+                    "ENABLE_ML_OFFLOADING=$mlOffloadingFeature",
+                    "ENABLE_ML_SERVICE=$mlServiceFeature"
                 )
                 targets("nnstreamer-native")
 
